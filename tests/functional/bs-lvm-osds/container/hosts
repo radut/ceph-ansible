@@ -2,4 +2,8 @@
 mon0
 
 [osds]
-osd0
+osd0 lvm_volumes="[{'data':'data_lv','data_vg':'data_group','db':'db_lv','db_vg':'db_group','wal':'wal_lv','wal_vg':'wal_group'}]"
+osd1 lvm_volumes="[{'data':'data_lv','data_vg':'data_group','db':'db_lv','db_vg':'db_group','wal':'wal_lv','wal_vg':'wal_group'}]" dmcrypt=True
+osd2 lvm_volumes="[{'data':'data_lv','data_vg':'data_group'}]"
+osd3 lvm_volumes="[{'data':'data_lv','data_vg':'data_group','db':'db_lv','db_vg':'db_group'}]"
+osd4 lvm_volumes="[{'data':'data_lv','data_vg':'data_group','wal':'wal_lv','wal_vg':'wal_group'}]"

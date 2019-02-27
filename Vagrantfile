@@ -507,8 +507,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       osd.vm.provider :libvirt do |lv|
         # always make /dev/sd{a/b/c} so that CI can ensure that
         # virtualbox and libvirt will have the same devices to use for OSDs
-        (0..2).each do |d|
-          lv.storage :file, :device => "hd#{driverletters[d]}", :size => '50G', :bus => "ide"
+        (0..10).each do |d|
+          lv.storage :file, :size => '50G'
         end
         lv.memory = MEMORY
         lv.random_hostname = true
