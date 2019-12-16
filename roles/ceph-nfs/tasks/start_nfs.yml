@@ -75,6 +75,58 @@
     - containerized_deployment | bool
     - ceph_nfs_enable_service | bool
 
+### FIX radut
+
+- name: "Template {{ cluster }}.client.{{ceph_nfs_ceph_user}}.keyring"
+  copy:
+    content: "[client.{{ceph_nfs_ceph_user}}]\n\tkey = {{ceph_nfs_ceph_key}}"
+    dest: "/etc/ceph/{{ cluster }}.client.{{ceph_nfs_ceph_user}}.keyring"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when:
+    - nfs_file_gw | bool
+    - ceph_nfs_ceph_key is defined
+
+- name: Make /usr/lib/nfs-ganesha-config.sh executable
+  file:
+    path: /usr/lib/nfs-ganesha-config.sh
+    state: file
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when:
+    - not containerized_deployment
+    - ceph_nfs_enable_service
+
+- name: Fix /lib/systemd/system/nfs-ganesha-config.service ExecStart
+  become: true
+  lineinfile:
+    dest: "/lib/systemd/system/nfs-ganesha-config.service"
+    regexp: "ExecStart="
+    line: "ExecStart=/usr/lib/nfs-ganesha-config.sh"
+    state: present
+  when:
+    - not containerized_deployment
+    - ceph_nfs_enable_service
+
+- name: "systemctl daemon-reload"
+  command: systemctl daemon-reload
+  when:
+    - not containerized_deployment
+    - ceph_nfs_enable_service
+
+- name: restart nfs-ganesha-config
+  systemd:
+    name: nfs-ganesha-config
+    state: restarted
+    enabled: yes
+  when:
+    - not containerized_deployment
+    - ceph_nfs_enable_service
+### END FIX radut
+
+
 - name: start nfs gateway service
   systemd:
     name: nfs-ganesha
