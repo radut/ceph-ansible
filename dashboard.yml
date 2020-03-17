@@ -58,10 +58,6 @@
         name: ceph-facts
       tags: ['ceph_update_config']
     - import_role:
-        name: ceph-facts
-        tasks_from: grafana
-      tags: ['ceph_update_config']
-    - import_role:
         name: ceph-prometheus
     - import_role:
         name: ceph-grafana
@@ -95,10 +91,6 @@
       tags: ['ceph_update_config']
     - import_role:
         name: ceph-facts
-      tags: ['ceph_update_config']
-    - import_role:
-        name: ceph-facts
-        tasks_from: grafana
       tags: ['ceph_update_config']
     - import_role:
         name: ceph-dashboard
