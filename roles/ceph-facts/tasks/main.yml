@@ -1,3 +1,5 @@
 ---
 - name: include facts.yml
   include_tasks: facts.yml
+- name: include grafana.yml
+  include_tasks: grafana.yml
